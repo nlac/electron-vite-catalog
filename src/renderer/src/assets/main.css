@@ -1,0 +1,48 @@
+html,
+body,
+#app {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	min-height: 100%;
+}
+
+#app {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.status-bar {
+	margin: 0;
+}
+
+header,
+footer {
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	padding: 6px;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+[role="menubar"]>.active {
+	background-color: var(--link-color-hovered);
+	color: white;
+}
+
+*[hidden] {
+	display: none;
+}
+
+.save-node {
+	display: none;
+}
+
+ul:has(.saveable-tree) .save-node {
+	display: inline-block;
+}
