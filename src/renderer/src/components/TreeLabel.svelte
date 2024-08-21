@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import { FsEntryType } from '../../../common/types'
   import type { TreeEntry } from '../types'
-  import { saveNode } from '../state'
+  import { getPartitionAliases, saveNode } from '../state'
 
   const noBubbling = (e: MouseEvent) => {
     e.preventDefault()
@@ -16,11 +16,19 @@
     noBubbling(e)
     comboOpen = !comboOpen
   }
-  const onSave = (e: MouseEvent) => {
+  const onSaveNode = (e: MouseEvent) => {
     noBubbling(e)
     saveNode(tree)
   }
+
+  const onSelectOption = (e: MouseEvent, option: string) => {
+    noBubbling(e)
+    comboOpen = false
+    tree.label = option
+  }
+
   $: label = tree.type === FsEntryType.Partition ? tree.fullPath : tree.label || tree.fullPath
+  $: options = getPartitionAliases()
 </script>
 
 {#if tree.type === FsEntryType.File}
@@ -46,17 +54,19 @@
           bind:value={tree.label}
         />
         <button on:click={toggleCombo}></button>
-        <ul role="listbox" hidden={!comboOpen}>
-          <li role="option">Facebook</li>
-          <li role="option">Amazon</li>
-          <li role="option">Apple</li>
-          <li role="option">Netflix</li>
-          <li role="option">Google</li>
+        <ul role="listbox" class="has-hover" hidden={!comboOpen}>
+          <li role="option">dummy</li>
+          {#each options as option}
+            {@const opts = option === tree.label ? { 'aria-selected': true } : {}}
+            <li role="option" on:click={(e) => onSelectOption(e, option)} {...opts}>
+              {option}
+            </li>
+          {/each}
         </ul>
       </div>
     {/if}
     {#if tree.type === FsEntryType.Partition || tree.type === FsEntryType.Folder}
-      <a href="javascript;" on:click={onSave} class="save-node">save</a>
+      <a href="javascript;" on:click={onSaveNode} class="save-node">save</a>
     {/if}
   </div>
 {/if}

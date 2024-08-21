@@ -43,6 +43,8 @@ main {
 	display: none;
 }
 
-ul:has(.saveable-tree) .save-node {
+.tree-view-container
+.tree-view-container 
+.tree-view-container:has(.saveable-tree) .save-node {
 	display: inline-block;
 }

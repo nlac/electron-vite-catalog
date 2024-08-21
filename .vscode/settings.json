@@ -15,7 +15,8 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    "svelte"
+    "svelte",
+	  "typescript"
   ],
   "svelte.plugin.svelte.compilerWarnings": {
     "a11y-accesskey": "ignore",

@@ -18,7 +18,7 @@
   }
 </script>
 
-<ul>
+<ul class="tree-view-container">
   <li>
     {#if children}
       <span class="node node-folder" class:expanded={tree._expanded} on:click={toggleNode}>
@@ -38,7 +38,7 @@
 </ul>
 
 <style>
-  ul {
+  .tree-view-container {
     margin: 0;
     list-style: none;
     padding-left: 1rem;

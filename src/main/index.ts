@@ -1,8 +1,8 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-//import icon from '../../resources/icon.png?asset'
-import { api } from './api'
+import { getDirectoryStructure, init, readDb, writeDb } from './api'
+import type { Database } from '../common/types'
 
 function createWindow(): void {
   // Create the browser window.
@@ -52,7 +52,22 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  api.init()
+  init()
+
+  ipcMain.on('ping', () => console.log('pong'))
+
+  ipcMain.handle(
+    'getDirectoryStructure',
+    async (event: Electron.IpcMainInvokeEvent, dirPath?: string, maxDepth?: number) => {
+      //event.sender.send()
+      return await getDirectoryStructure(dirPath, maxDepth)
+    }
+  )
+  ipcMain.handle('readDb', () => readDb())
+
+  ipcMain.handle('writeDb', (event: Electron.IpcMainInvokeEvent, database: Database) =>
+    writeDb(database)
+  )
 
   createWindow()
 

@@ -13,6 +13,7 @@ export type FsEntry = {
   children?: FsEntry[]
 }
 
-export type Database = Record<string, FsEntry[]>
+// array of partitions
+export type Database = FsEntry[]
 
 export type SearchResult = { alias: string; path: string[] }

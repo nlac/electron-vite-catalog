@@ -13,7 +13,9 @@
     "strict": false,
     "allowJs": true,
     "checkJs": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
   },
   "references": [{ "path": "./tsconfig.node.json" }]
 }
