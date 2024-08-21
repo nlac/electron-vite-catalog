@@ -1,6 +1,5 @@
 import { writable } from 'svelte/store'
-import type { TreeEntry } from './types'
-import { type FsEntry, type Database, FsEntryType } from '../../common/types'
+import { type FsEntry, type Database, type TreeEntry, FsEntryType } from '../../../common/types'
 //import { FsEntryType } from '../../common/types'
 
 export const database = writable<Database>([])
@@ -90,6 +89,7 @@ export const getFsDrives = () => {
   })
 }
 
+// keeping snapshot up to date
 database.subscribe((db) => {
   databaseSnapshot = db
   console.info('db is now:', db)

@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
-  import { FsEntryType } from '../../../common/types'
-  import type { TreeEntry } from '../types'
-  import { getPartitionAliases, saveNode } from '../state'
+  import { type TreeEntry, FsEntryType } from '../../../common/types'
+  import { getPartitionAliases, saveNode } from '../states/state'
 
   const noBubbling = (e: MouseEvent) => {
     e.preventDefault()
@@ -84,12 +83,10 @@
     vertical-align: sub;
   }
 
-  /*  
   .tree-label-drive .tree-label-text {
-    width: 2rem;
-    max-width: 2rem;
+    min-width: 1rem;
   }
-*/
+
   .tree-label-drive {
     color: #00f;
   }

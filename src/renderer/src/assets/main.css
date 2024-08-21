@@ -13,6 +13,10 @@ body,
 	justify-content: space-between;
 }
 
+#app:has(nav) .loading-message {
+	display: none;
+}
+
 .status-bar {
 	margin: 0;
 }
@@ -43,8 +47,6 @@ main {
 	display: none;
 }
 
-.tree-view-container
-.tree-view-container 
-.tree-view-container:has(.saveable-tree) .save-node {
+.tree-view-container .tree-view-container .tree-view-container:has(.saveable-tree) .save-node {
 	display: inline-block;
 }

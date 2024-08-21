@@ -1,9 +1,8 @@
 <script lang="ts">
   import TreeView from './TreeView.svelte'
   import TreeLabel from './TreeLabel.svelte'
-  import { FsEntryType } from '../../../common/types'
-  import type { TreeEntry } from '../types'
-  import { getFsDrives } from '../state'
+  import { type TreeEntry, FsEntryType } from '../../../common/types'
+  import { getFsDrives } from '../states/state'
 
   const getChildren = (node: TreeEntry) =>
     node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[])

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { ComponentType } from 'svelte'
-  import type { Expandable } from '../types'
+  import type { Expandable } from '../../../common/types'
 
   type TreeNode = $$Generic<Expandable>
   export let tree: TreeNode
@@ -45,7 +45,7 @@
     user-select: none;
   }
   .node-file {
-    padding-left: 1.5rem;
+    padding-left: 1rem;
   }
   .node-folder {
     cursor: pointer;
@@ -53,7 +53,6 @@
   }
   .node-folder:before {
     content: '⊞';
-    margin-right: 0.5rem;
   }
   .expanded:before {
     content: '⊟';

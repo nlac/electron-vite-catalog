@@ -13,6 +13,14 @@ export type FsEntry = {
   children?: FsEntry[]
 }
 
+export type Expandable = {
+  _expanded: boolean
+  _parentPartition?: TreeEntry
+  _originalLabel?: string
+}
+
+export type TreeEntry = FsEntry & Expandable
+
 // array of partitions
 export type Database = FsEntry[]
 
