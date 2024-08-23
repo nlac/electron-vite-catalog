@@ -1,33 +1,38 @@
 <script lang="ts" context="module">
-  import { type TreeEntry, FsEntryType } from '../../../common/types'
-  import { getPartitionAliases, saveNode } from '../states/state'
+  import { type TreeEntry, DbStatus, FsEntryType } from '../../../common/types'
+  import { saveNode, getDbStatus, deleteNode } from '../states/database'
 
   const noBubbling = (e: MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
   }
+
+  const saveLabels = {
+    [DbStatus.NoReasonToSave]: '',
+    [DbStatus.DescendantSaved]: 'save',
+    [DbStatus.Saved]: 'update',
+    [DbStatus.NonSaved]: 'save'
+  }
 </script>
 
 <script lang="ts">
   export let tree: TreeEntry
-  let comboOpen = false
-  const toggleCombo = (e: MouseEvent) => {
-    noBubbling(e)
-    comboOpen = !comboOpen
-  }
+
   const onSaveNode = (e: MouseEvent) => {
     noBubbling(e)
     saveNode(tree)
   }
 
-  const onSelectOption = (e: MouseEvent, option: string) => {
+  const onDeleteNode = (e: MouseEvent) => {
     noBubbling(e)
-    comboOpen = false
-    tree.label = option
+    deleteNode(tree)
   }
 
-  $: label = tree.type === FsEntryType.Partition ? tree.fullPath : tree.label || tree.fullPath
-  $: options = getPartitionAliases()
+  const isPartition = tree.type === FsEntryType.Partition
+  const isLabelEditable = isPartition && !tree.label
+
+  $: label = isPartition ? tree.fullPath : tree.label || tree.fullPath
+  $: dbStatus = getDbStatus(tree)
 </script>
 
 {#if tree.type === FsEntryType.File}
@@ -36,43 +41,37 @@
 
 {#if tree.type !== FsEntryType.File}
   <div
-    class="tree-label {tree.type === FsEntryType.Partition ? 'tree-label-drive' : ''} {tree.type ===
-      FsEntryType.Partition &&
-      tree.label &&
-      'saveable-tree'}"
+    class="tree-label"
+    class:tree-label-drive={isPartition}
+    class:saveable-tree={isPartition && tree.label}
   >
     <span class="tree-label-text">{label}</span>
-    {#if tree.type === FsEntryType.Partition}
-      <div class="combobox">
+    {#if isPartition}
+      <div class="field-row">
         <input
           type="text"
-          role="combobox"
-          aria-owns="company"
-          placeholder="select or fill its name"
-          on:click={noBubbling}
+          class="label-editor"
+          placeholder="fill your partition label"
           bind:value={tree.label}
+          on:click={noBubbling}
+          disabled={!isLabelEditable}
         />
-        <button on:click={toggleCombo}></button>
-        <ul role="listbox" class="has-hover" hidden={!comboOpen}>
-          <li role="option">dummy</li>
-          {#each options as option}
-            {@const opts = option === tree.label ? { 'aria-selected': true } : {}}
-            <li role="option" on:click={(e) => onSelectOption(e, option)} {...opts}>
-              {option}
-            </li>
-          {/each}
-        </ul>
       </div>
     {/if}
-    {#if tree.type === FsEntryType.Partition || tree.type === FsEntryType.Folder}
-      <a href="javascript;" on:click={onSaveNode} class="save-node">save</a>
+    {#if (tree.type === FsEntryType.Partition || tree.type === FsEntryType.Folder) && dbStatus !== DbStatus.NoReasonToSave}
+      <a href="#" on:click={onSaveNode} class="save-node {dbStatus}">{saveLabels[dbStatus]}</a>
+    {/if}
+    {#if dbStatus === DbStatus.Saved}
+      <a href="#" on:click={onDeleteNode} class="delete-node">delete</a>
     {/if}
   </div>
 {/if}
 
 <style>
   .tree-label {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   .tree-label-text {
@@ -84,21 +83,20 @@
   }
 
   .tree-label-drive .tree-label-text {
-    min-width: 1rem;
+    min-width: 1.2rem;
   }
 
-  .tree-label-drive {
+  .save-node,
+  .delete-node {
+    margin-left: 0.2rem;
+  }
+
+  .tree-label-drive,
+  .save-node {
     color: #00f;
   }
 
-  .combobox {
-    display: inline-block;
-    position: relative;
-  }
-
-  .combobox ul {
-    position: absolute;
-    width: 100%;
-    z-index: 1;
+  .delete-node {
+    color: #f00;
   }
 </style>

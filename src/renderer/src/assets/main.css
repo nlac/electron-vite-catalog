@@ -1,52 +1,82 @@
 html,
 body,
 #app {
-	padding: 0;
-	margin: 0;
-	height: 100%;
-	min-height: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  min-height: 100%;
 }
 
 #app {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #app:has(nav) .loading-message {
-	display: none;
+  display: none;
 }
 
 .status-bar {
-	margin: 0;
+  margin: 0;
 }
 
 header,
 footer {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-	padding: 6px;
-	display: flex;
-	flex-direction: column;
-	flex-grow: 1;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: auto;
 }
 
-[role="menubar"]>.active {
-	background-color: var(--link-color-hovered);
-	color: white;
+[role='menubar'] > .active {
+  background-color: var(--link-color-hovered);
+  color: white;
+}
+
+.reload-button {
+  text-align: right;
 }
 
 *[hidden] {
-	display: none;
+  display: none;
 }
 
 .save-node {
-	display: none;
+  display: none;
 }
 
-.tree-view-container .tree-view-container .tree-view-container:has(.saveable-tree) .save-node {
-	display: inline-block;
+.save-node.descendant-saved {
+  font-weight: bold;
+}
+
+.tree-view ul ul:has(.saveable-tree) .save-node {
+  display: inline-block;
+}
+
+.status-bar [role='progressbar'] {
+  visibility: hidden;
+}
+
+.status-bar.progress [role='progressbar'] {
+  visibility: visible;
+}
+
+.status-bar.attention {
+  background-color: #2a90ff;
+  color: #ffffff;
+}
+
+input[type='text'][disabled] {
+  background-color: var(--button-face-disabled);
+}
+
+.text-right {
+  text-align: right;
 }

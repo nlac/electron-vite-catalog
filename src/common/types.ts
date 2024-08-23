@@ -15,13 +15,21 @@ export type FsEntry = {
 
 export type Expandable = {
   _expanded: boolean
-  _parentPartition?: TreeEntry
-  _originalLabel?: string
 }
 
-export type TreeEntry = FsEntry & Expandable
+export type TreeEntry = FsEntry &
+  Expandable & {
+    _parentPartition?: TreeEntry
+  }
 
 // array of partitions
 export type Database = FsEntry[]
+
+export enum DbStatus {
+  NoReasonToSave = 'no-reason-to-save', // no reason to save/update cus it's a file or its parent is already saved
+  DescendantSaved = 'descendant-saved', // can be saved + show that there's some saved descendants
+  Saved = 'saved', // updateable
+  NonSaved = 'non-saved' // saveable
+}
 
 export type SearchResult = { alias: string; path: string[] }

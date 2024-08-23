@@ -2,7 +2,8 @@
   import TreeView from './TreeView.svelte'
   import TreeLabel from './TreeLabel.svelte'
   import { type TreeEntry, FsEntryType } from '../../../common/types'
-  import { getFsDrives } from '../states/state'
+  import { removeableDrives, getRemoveableDrives } from '../states/removeableDrives'
+  import { progress } from '../states/progress'
 
   const getChildren = (node: TreeEntry) =>
     node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[])
@@ -24,17 +25,32 @@
   const getRoot = (drives: TreeEntry[]): TreeEntry => {
     return {
       type: FsEntryType.Root,
-      label: 'Available drives',
+      label: 'Available removeable drives on the PC',
       fullPath: '',
       children: drives,
       _expanded: true
     }
   }
+
+  getRemoveableDrives()
+  progress.set(true)
 </script>
 
-{#await getFsDrives()}
+{#await $removeableDrives}
   <p>Loading...</p>
 {:then drives}
+  {(() => {
+    progress.set(false)
+    return ''
+  })()}
+  <a
+    href="#"
+    class="reload-button"
+    on:click={() => {
+      progress.set(true)
+      getRemoveableDrives()
+    }}>⟳</a
+  >
   <TreeView tree={getRoot(drives)} {getChildren} {onOpenNode} labelComponent={TreeLabel} />
 {:catch error}
   <p style="color: red">{error.message}</p>

@@ -1,18 +1,15 @@
 <script lang="ts">
-  import Versions from './components/Versions.svelte'
   import AvailableDrives from './components/AvailableDrives.svelte'
+  import Browse from './components/Browse.svelte'
   import Tabs, { type TabItem } from './components/Tabs.svelte'
+  import Footer from './components/Footer.svelte'
 
   const items: TabItem[] = [
     { label: 'Manage', component: AvailableDrives },
-    { label: 'Search', component: Versions }
+    { label: 'Search', component: Browse }
   ]
 </script>
 
 <Tabs {items} />
 
-<footer>
-  <div class="status-bar">
-    <p class="status-bar-field">footer here</p>
-  </div>
-</footer>
+<Footer />

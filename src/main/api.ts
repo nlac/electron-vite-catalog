@@ -4,25 +4,14 @@ import drivelist from 'drivelist'
 import { app } from 'electron'
 import { FsEntryType } from '../common/types'
 import type { FsEntry, SearchResult, Database } from '../common/types'
+import {
+  removePartitionLetter,
+  sortFsEntries,
+  createOrGetPartitionLabel,
+  PARTITION_ID_FILE
+} from './fs-utils'
 
 let dbPath: string = ''
-
-const sortFsEntries = (a: FsEntry, b: FsEntry) => {
-  const labelA = a.label || a.fullPath
-  const labelB = b.label || b.fullPath
-  if (a.type !== FsEntryType.File && b.type !== FsEntryType.File) {
-    return labelA > labelB ? 1 : -1
-  }
-  if (a.type !== FsEntryType.File) {
-    return -1
-  }
-  if (b.type !== FsEntryType.File) {
-    return 1
-  }
-  return labelA > labelB ? 1 : -1
-}
-
-const removePartitionLetter = (fullPath: string) => fullPath.replace(/^[a-zA-Z]:[/\\]+/, '')
 
 const getRemovableDrives = async (): Promise<FsEntry[]> => {
   const drives = await drivelist.list()
@@ -36,9 +25,9 @@ const getRemovableDrives = async (): Promise<FsEntry[]> => {
         children: drive.mountpoints
           .map((mp) => ({
             type: FsEntryType.Partition,
-            label: '', //mp.path,
+            label: createOrGetPartitionLabel(mp.path),
             fullPath: mp.path
-            //children: []
+            // no children yet
           }))
           .sort(sortFsEntries)
       }))
@@ -48,28 +37,32 @@ const getRemovableDrives = async (): Promise<FsEntry[]> => {
 
 const getFolderChildren = (dirPath: string): FsEntry[] => {
   const children: FsEntry[] = []
-  const items = fs.readdirSync(dirPath)
-  for (const item of items) {
-    try {
-      const fullPath = path.join(dirPath, item)
-      const stats = fs.statSync(fullPath)
-      if (stats.isDirectory()) {
-        children.push({
-          type: FsEntryType.Folder,
-          label: item,
-          fullPath: removePartitionLetter(fullPath)
-          //children: []
-        })
-      } else if (stats.isFile()) {
-        children.push({
-          type: FsEntryType.File,
-          label: item,
-          fullPath: removePartitionLetter(fullPath)
-        })
+  try {
+    const items = fs.readdirSync(dirPath)
+    for (const item of items) {
+      try {
+        const fullPath = path.join(dirPath, item)
+        const stats = fs.statSync(fullPath)
+        if (stats.isDirectory()) {
+          children.push({
+            type: FsEntryType.Folder,
+            label: item,
+            fullPath: removePartitionLetter(fullPath)
+            //children: []
+          })
+        } else if (stats.isFile() && item !== PARTITION_ID_FILE) {
+          children.push({
+            type: FsEntryType.File,
+            label: item,
+            fullPath: removePartitionLetter(fullPath)
+          })
+        }
+      } catch (err: any) {
+        console.error(err.message)
       }
-    } catch (err: any) {
-      console.error(err.message)
     }
+  } catch (err: any) {
+    console.error(err.message)
   }
   return children.sort(sortFsEntries)
 }
@@ -92,11 +85,6 @@ export const getDirectoryStructure = async (
           level + 1
         )
       }
-    } else if (item.type === FsEntryType.Drive && item.children) {
-      // item is a drive -> children are already filled
-      for (const partition of item.children) {
-        partition.children = await getDirectoryStructure(partition.fullPath, maxDepth, level + 2)
-      }
     }
   }
 
@@ -113,6 +101,12 @@ export const readDb = (): Database => {
 
 export const writeDb = (database: Database) => {
   // console.info('writing to ' + dbPath)
+  for (const partition of database) {
+    if (partition.label && partition.fullPath) {
+      createOrGetPartitionLabel(partition.fullPath, partition.label)
+    }
+    partition.fullPath = ''
+  }
   fs.writeFileSync(dbPath, JSON.stringify(database, null, 2))
 }
 
