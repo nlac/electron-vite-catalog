@@ -1,43 +1,43 @@
 <script lang="ts">
-  import { onDestroy, type ComponentType } from 'svelte'
-  import SimpleLabel from './SimpleLabel.svelte'
-  import type { Expandable } from '../../../common/types'
-  import { onMessage } from '../states/message'
+  import { onDestroy, type ComponentType } from 'svelte';
+  import SimpleLabel from './SimpleLabel.svelte';
+  import type { Expandable } from '../../../common/types';
+  import { onMessage } from '../states/message';
 
-  type TreeNode = $$Generic<Expandable>
-  export let tree: TreeNode
-  export let getChildren: (node: TreeNode) => TreeNode[]
-  export let onOpenNode: (node: TreeNode) => Promise<void> = undefined
-  export let labelComponent: ComponentType = SimpleLabel
-  export let level = 0
+  type TreeNode = $$Generic<Expandable>;
+  export let tree: TreeNode;
+  export let getChildren: (node: TreeNode) => TreeNode[];
+  export let onOpenNode: (node: TreeNode) => Promise<void> = undefined;
+  export let labelComponent: ComponentType = SimpleLabel;
+  export let level = 0;
 
-  $: children = getChildren(tree)
-  $: folderProps = tree._expanded ? { open: true } : {}
+  $: children = getChildren(tree);
+  $: folderProps = tree._expanded ? { open: true } : {};
 
   const toggleNode = async () => {
     if (!tree._expanded && onOpenNode) {
-      await onOpenNode(tree)
+      await onOpenNode(tree);
     }
     // setTimeout is needed to update folderProps properly...
     setTimeout(() => {
-      tree._expanded = !tree._expanded
-    }, 0)
-  }
+      tree._expanded = !tree._expanded;
+    }, 0);
+  };
 
   const unsubscribeMessages = onMessage(['update-tree'], (_key, node) => {
     if (tree === node) {
       if (tree._expanded) {
-        tree._expanded = false
-        toggleNode()
+        tree._expanded = false;
+        toggleNode();
       }
     }
-    return tree === node
-  })
+    return tree === node;
+  });
 
-  onDestroy(unsubscribeMessages)
+  onDestroy(unsubscribeMessages);
 </script>
 
-<ul class={!level && 'tree-view has-collapse-button has-connectorx has-container'}>
+<ul class={!level && 'tree-view has-collapse-button has-container'}>
   <li>
     {#if children}
       <details {...folderProps}>

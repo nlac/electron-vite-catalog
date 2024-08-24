@@ -7,23 +7,23 @@ export enum FsEntryType {
 }
 
 export type FsEntry = {
-  type: FsEntryType
-  label: string
-  fullPath: string
-  children?: FsEntry[]
-}
+  type: FsEntryType;
+  label: string;
+  fullPath: string;
+  children?: FsEntry[];
+};
 
 export type Expandable = {
-  _expanded: boolean
-}
+  _expanded: boolean;
+};
 
 export type TreeEntry = FsEntry &
   Expandable & {
-    _parentPartition?: TreeEntry
-  }
+    _parentPartition?: TreeEntry;
+  };
 
 // array of partitions
-export type Database = FsEntry[]
+export type Database = FsEntry[];
 
 export enum DbStatus {
   NoReasonToSave = 'no-reason-to-save', // no reason to save/update cus it's a file or its parent is already saved
@@ -32,4 +32,4 @@ export enum DbStatus {
   NonSaved = 'non-saved' // saveable
 }
 
-export type SearchResult = { alias: string; path: string[] }
+export type SearchResult = { alias: string; path: string[] };

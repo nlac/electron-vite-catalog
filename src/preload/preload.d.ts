@@ -1,13 +1,13 @@
-import { ElectronAPI } from '@electron-toolkit/preload'
-import type { Database, FsEntry } from '../common/types'
+import { ElectronAPI } from '@electron-toolkit/preload';
+import type { Database, FsEntry } from '../common/types';
 
 declare global {
   interface Window {
-    electron: ElectronAPI
+    electron: ElectronAPI;
     api: {
-      getDirectoryStructure: (dirPath?: string, maxDepth?: number) => Promise<FsEntry[]>
-      readDb: () => Promise<Database>
-      writeDb: (database: Database) => Promise<void>
-    }
+      getDirectoryStructure: (dirPath?: string, maxDepth?: number) => Promise<FsEntry[]>;
+      readDb: () => Promise<Database>;
+      writeDb: (database: Database) => Promise<any>;
+    };
   }
 }

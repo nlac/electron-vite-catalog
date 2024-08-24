@@ -21,9 +21,12 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'svelte/no-unused-svelte-ignore': 'off',
-    'svelte/valid-compile': ['error', { ignoreWarnings: true }]
+    'svelte/valid-compile': ['error', { ignoreWarnings: true }],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    '@stylistic/js/semi-style': ['error', 'last'],
+    'semi-style': ['error', 'last']
   },
   globals: {
     $$Generic: 'readonly'
   }
-}
+};

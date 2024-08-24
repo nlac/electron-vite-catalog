@@ -1,15 +1,15 @@
 <script lang="ts" context="module">
-  import type { ComponentType } from 'svelte'
+  import type { ComponentType } from 'svelte';
 
   export type TabItem = {
-    label: string
-    component: ComponentType
-  }
+    label: string;
+    component: ComponentType;
+  };
 </script>
 
 <script lang="ts">
-  export let items: TabItem[] = []
-  export let activeIndex = 0
+  export let items: TabItem[] = [];
+  export let activeIndex = 0;
 </script>
 
 <nav>

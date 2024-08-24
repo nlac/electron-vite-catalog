@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { FsEntryType, type TreeEntry } from '../../../common/types'
-  import { database } from '../states/database'
-  import TreeView from './TreeView.svelte'
+  import { FsEntryType, type TreeEntry } from '../../../common/types';
+  import { database } from '../states/database';
+  import TreeView from './TreeView.svelte';
 
   $: root = {
     type: FsEntryType.Root,
-    label: 'Partitions in database',
+    label: 'Saved partitions in the database',
     fullPath: '',
     children: $database as TreeEntry[],
     _expanded: true
-  } as TreeEntry
+  } as TreeEntry;
 
   const getChildren = (node: TreeEntry) =>
-    node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[])
+    node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[]);
 </script>
 
 <TreeView tree={root} {getChildren} />
