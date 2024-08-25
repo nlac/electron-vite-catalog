@@ -1,6 +1,7 @@
 # electron-vite-catalog
 
-An Electron application with Svelte and TypeScript
+Simple desktop file catalog app for removeable storages.
+Based on [electron-vite](https://electron-vite.org/) and [svelte](https://svelte.dev).
 
 ## Recommended IDE Setup
 
@@ -32,12 +33,3 @@ $ npm run build:mac
 # For Linux
 $ npm run build:linux
 ```
-
-# nlac:
-
-npm i drivelist 7.css
-
-## links
-
-https://svelte.dev/repl/cf05bd4a4ca14fb8ace8b6cdebbb58da?version=4.2.18
-https://stackoverflow.com/questions/77518443/disable-certain-a11y-warnings-globally-in-sveltekit
