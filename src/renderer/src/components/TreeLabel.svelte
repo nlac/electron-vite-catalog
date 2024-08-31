@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { type TreeEntry, DbStatus, FsEntryType } from '../../../common/types';
-  import { saveNode, getDbStatus, deleteNode } from '../states/database';
+  import { saveNode, getDbStatus, deleteNode } from '../stores/database';
 
   const noBubbling = (e: MouseEvent) => {
     e.preventDefault();

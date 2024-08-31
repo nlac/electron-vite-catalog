@@ -1,15 +1,15 @@
 <script lang="ts" context="module">
   import type { ComponentType } from 'svelte';
+  import { activePage } from '../stores/activePage';
 
-  export type TabItem = {
+  export type NavItem = {
     label: string;
     component: ComponentType;
   };
 </script>
 
 <script lang="ts">
-  export let items: TabItem[] = [];
-  export let activeIndex = 0;
+  export let items: NavItem[] = [];
 </script>
 
 <nav>
@@ -17,8 +17,8 @@
     {#each items as item, idx}
       <li
         role="menuitem"
-        class={idx === activeIndex ? 'active' : ''}
-        on:click={() => (activeIndex = idx)}
+        class={idx === $activePage ? 'active' : ''}
+        on:click={() => activePage.set(idx)}
       >
         {item.label}
       </li>
@@ -27,7 +27,7 @@
 </nav>
 <main>
   {#each items as item, idx}
-    {#if idx === activeIndex}
+    {#if idx === $activePage}
       <svelte:component this={item.component} />
     {/if}
   {/each}

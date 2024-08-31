@@ -2,7 +2,7 @@
   import { onDestroy, type ComponentType } from 'svelte';
   import SimpleLabel from './SimpleLabel.svelte';
   import type { Expandable } from '../../../common/types';
-  import { onMessage } from '../states/message';
+  import { onMessage } from '../stores/message';
 
   type TreeNode = $$Generic<Expandable>;
   export let tree: TreeNode;

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { progress } from '../states/progress';
+  import { progress } from '../stores/progress';
 
   $: message = '';
   progress.subscribe((p) => {

@@ -2,8 +2,8 @@
   import TreeView from './TreeView.svelte';
   import TreeLabel from './TreeLabel.svelte';
   import { type TreeEntry, FsEntryType } from '../../../common/types';
-  import { removeableDrives, getRemoveableDrives } from '../states/removeableDrives';
-  import { progress } from '../states/progress';
+  import { removeableDrives, getRemoveableDrives } from '../stores/removeableDrives';
+  import { progress } from '../stores/progress';
 
   const getChildren = (node: TreeEntry) =>
     node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[]);

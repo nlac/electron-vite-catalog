@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
-  import { searchPattern } from '../states/database';
+  import { searchPattern, database } from '../stores/database';
+  import { activePage } from '../stores/activePage';
 
   const getResults = (term: string) => {
     if (term.length < 3) {
@@ -28,14 +29,31 @@
   $: result = getResults(term);
 </script>
 
-<p>
-  Enter a regular expression that matches a part of the file or folder name to get which removeable
-  drive and what path it is on
-</p>
+{#if $database.length}
+  <p class="no-margin-top">
+    Enter a regular expression that matches a part of the file or folder name to get which
+    removeable drive and what path it is on
+  </p>
 
-<div class="field-row">
-  <input id="text26" type="text" bind:value={term} size={20} placeholder="enter at least 3 chars" />
-</div>
+  <div class="field-row">
+    <input
+      id="text26"
+      type="text"
+      bind:value={term}
+      size={20}
+      placeholder="enter at least 3 chars"
+    />
+  </div>
+
+  <p>or you can <a href="#" on:click={() => activePage.set(1)}>browse</a> the saved catalog.</p>
+{:else}
+  <p class="no-margin-top">
+    Nothing catalogized yet. Insert a removeable drive and <a
+      href="#"
+      on:click={() => activePage.set(2)}>save</a
+    > some folder or partition.
+  </p>
+{/if}
 
 <div>
   {#if typeof result === 'string'}

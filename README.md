@@ -1,7 +1,8 @@
 # electron-vite-catalog
 
-Simple desktop file catalog app for removeable storages.
+Simple desktop file catalog app of removeable storages.
 Based on [electron-vite](https://electron-vite.org/) and [svelte](https://svelte.dev).
+Build on the svelte/ts scaffolding of electron-vite described [here](https://electron-vite.org/guide/).
 
 ## Recommended IDE Setup
 

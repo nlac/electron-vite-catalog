@@ -1,6 +1,6 @@
 <script lang="ts">
   import { FsEntryType, type TreeEntry } from '../../../common/types';
-  import { database } from '../states/database';
+  import { database } from '../stores/database';
   import TreeView from './TreeView.svelte';
 
   $: root = {

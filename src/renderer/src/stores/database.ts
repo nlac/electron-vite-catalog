@@ -29,12 +29,13 @@ const sortNodes = (children: FsEntry[]) => {
 };
 
 const maintainDb = (db: Database) => {
+  // deleting saved sub-trees of other saved folders
   for (const partition of db) {
     for (let i = 0; i < partition.children.length; i++) {
       const folder = partition.children[i];
       if (
         partition.children.find(
-          (child) => child !== folder && folder.fullPath.indexOf(child.fullPath + '\\') === 0
+          (child) => child !== folder && isDescendant(child.fullPath, folder.fullPath)
         )
       ) {
         partition.children.splice(i, 1);
