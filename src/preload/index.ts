@@ -13,7 +13,8 @@ if (process.contextIsolated) {
       getDirectoryStructure: (dirPath?: string, maxDepth?: number) =>
         ipcRenderer.invoke('getDirectoryStructure', dirPath, maxDepth),
       readDb: async () => ipcRenderer.invoke('readDb'),
-      writeDb: (database: Database) => ipcRenderer.invoke('writeDb', database)
+      writeDb: (database: Database) => ipcRenderer.invoke('writeDb', database),
+      getDbPath: async () => ipcRenderer.invoke('getDbPath')
     });
   } catch (error) {
     console.error(error);
@@ -24,6 +25,7 @@ if (process.contextIsolated) {
     getDirectoryStructure: (dirPath?: string, maxDepth?: number) =>
       ipcRenderer.invoke('getDirectoryStructure', dirPath, maxDepth),
     readDb: async () => ipcRenderer.invoke('readDb'),
-    writeDb: (database: Database) => ipcRenderer.invoke('writeDb', database)
+    writeDb: (database: Database) => ipcRenderer.invoke('writeDb', database),
+    getDbPath: async () => ipcRenderer.invoke('getDbPath')
   };
 }

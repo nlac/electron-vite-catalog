@@ -8,6 +8,7 @@ declare global {
       getDirectoryStructure: (dirPath?: string, maxDepth?: number) => Promise<FsEntry[]>;
       readDb: () => Promise<Database>;
       writeDb: (database: Database) => Promise<any>;
+      getDbPath: () => Promise<string>;
     };
   }
 }

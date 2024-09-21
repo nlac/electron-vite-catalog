@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
-import { getDirectoryStructure, init, readDb, writeDb } from './api';
+import { getDbPath, getDirectoryStructure, init, readDb, writeDb } from './api';
 import type { Database } from '../common/types';
 
 function createWindow(): void {
@@ -68,6 +68,8 @@ app.whenReady().then(() => {
   ipcMain.handle('writeDb', (event: Electron.IpcMainInvokeEvent, database: Database) =>
     writeDb(database)
   );
+
+  ipcMain.handle('getDbPath', () => getDbPath());
 
   createWindow();
 

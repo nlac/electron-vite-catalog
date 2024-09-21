@@ -9,3 +9,7 @@
   removeable drives, then <a href="#" on:click={() => activePage.set(0)}>search</a> or
   <a href="#" on:click={() => activePage.set(1)}>browse</a> the catalog.
 </p>
+
+{#await window.api.getDbPath() then dbPath}
+  <p>database: {dbPath}</p>
+{/await}

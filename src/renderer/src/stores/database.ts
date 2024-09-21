@@ -31,6 +31,7 @@ const sortNodes = (children: FsEntry[]) => {
 const maintainDb = (db: Database) => {
   // deleting saved sub-trees of other saved folders
   for (const partition of db) {
+    delete (partition as TreeEntry)._expanded;
     for (let i = 0; i < partition.children.length; i++) {
       const folder = partition.children[i];
       if (

@@ -41,13 +41,15 @@
   <li>
     {#if children}
       <details {...folderProps}>
-        <summary on:click={toggleNode}><svelte:component this={labelComponent} {tree} /></summary>
+        <summary on:click={toggleNode}
+          ><svelte:component this={labelComponent} {tree} {level} /></summary
+        >
         {#each children as child}
           <svelte:self tree={child} {getChildren} {onOpenNode} {labelComponent} level={level + 1} />
         {/each}
       </details>
     {:else}
-      <svelte:component this={labelComponent} {tree} />
+      <svelte:component this={labelComponent} {tree} {level} />
     {/if}
   </li>
 </ul>

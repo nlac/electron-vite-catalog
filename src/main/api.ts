@@ -12,7 +12,11 @@ import {
 } from './fs-utils';
 import { sortFsEntries } from '../common/utils';
 
-let dbPath: string = '';
+let dbPath: string;
+let dbPathResolver: () => void;
+const dbPathPromise = new Promise<string>((resolve) => (dbPathResolver = () => resolve(dbPath)));
+
+export const getDbPath = () => dbPathPromise;
 
 const getRemovableDrives = async (): Promise<FsEntry[]> => {
   const drives = await drivelist.list();
@@ -136,15 +140,13 @@ export const search = (database: Database, regexpPattern: string) => {
   for (const entry of database) {
     results.push(...searchNodes(entry.label, regex, entry.children as FsEntry[], []));
   }
-  //for (const alias in database) {
-  //  results.push(...searchNodes(alias, regex, database[alias], []))
-  //}
 
   return results;
 };
 
 export const init = () => {
   dbPath = path.join(app.getPath('appData'), 'catalog', 'database.json');
+  dbPathResolver();
   const dbDir = path.dirname(dbPath);
   if (!fs.existsSync(dbDir)) {
     fs.mkdirSync(dbDir, { recursive: true });

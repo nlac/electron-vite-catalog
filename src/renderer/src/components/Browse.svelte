@@ -2,6 +2,7 @@
   import { FsEntryType, type TreeEntry } from '../../../common/types';
   import { database } from '../stores/database';
   import TreeView from './TreeView.svelte';
+  import DbTreeLabel from './DbTreeLabel.svelte';
 
   $: root = {
     type: FsEntryType.Root,
@@ -15,4 +16,4 @@
     node.type === FsEntryType.File ? undefined : ((node.children || []) as TreeEntry[]);
 </script>
 
-<TreeView tree={root} {getChildren} />
+<TreeView tree={root} {getChildren} labelComponent={DbTreeLabel} />

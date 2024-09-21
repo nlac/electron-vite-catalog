@@ -1,6 +1,6 @@
 <script lang="ts">
   import TreeView from './TreeView.svelte';
-  import TreeLabel from './TreeLabel.svelte';
+  import FsTreeLabel from './FsTreeLabel.svelte';
   import { type TreeEntry, FsEntryType } from '../../../common/types';
   import { removeableDrives, getRemoveableDrives } from '../stores/removeableDrives';
   import { progress } from '../stores/progress';
@@ -51,7 +51,7 @@
       getRemoveableDrives();
     }}>⟳</a
   >
-  <TreeView tree={getRoot(drives)} {getChildren} {onOpenNode} labelComponent={TreeLabel} />
+  <TreeView tree={getRoot(drives)} {getChildren} {onOpenNode} labelComponent={FsTreeLabel} />
 {:catch error}
   <p style="color: red">{error.message}</p>
 {/await}

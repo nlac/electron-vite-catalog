@@ -4,6 +4,7 @@
 
 <script lang="ts">
   export let tree: TreeEntry;
+  export let level = 0;
 </script>
 
 {tree.label}
